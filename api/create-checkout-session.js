@@ -20,11 +20,17 @@ module.exports = async (req, res) => {
     const line_items = items.map((item) => ({
       price_data: {
         currency: 'usd',
-        product_data: { name: item.title },
+        product_data: {
+          name: item.title,
+          metadata: { album_code: item.albumCode || 'SIN-ALBUM' },
+        },
         unit_amount: Math.round(item.price * 100), // Stripe usa centavos
       },
       quantity: 1,
     }));
+
+    // Códigos de álbum únicos en este carrito, para poder filtrar el reporte por producción
+    const albumCodes = [...new Set(items.map((item) => item.albumCode || 'SIN-ALBUM'))].join(',');
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -32,6 +38,7 @@ module.exports = async (req, res) => {
       mode: 'payment',
       metadata: {
         negocio: 'musica-wilfredo-ortiz',
+        album_codes: albumCodes,
       },
       success_url: `${req.headers.origin}/?compra=exitosa`,
       cancel_url: `${req.headers.origin}/?compra=cancelada`,
