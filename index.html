@@ -475,8 +475,26 @@ function toggleCart(open){
   document.getElementById('overlay').classList.toggle('open', open);
 }
 
-function checkout(method){
-  alert('Aquí se conectaría el cobro real vía ' + method + '. En la versión final esto crea la sesión de pago y, al confirmarse, libera el link de descarga.');
+async function checkout(method){
+  if(method === 'PayPal'){
+    alert('El botón de PayPal se conecta en un paso aparte — por ahora usa "Pagar con tarjeta" para probar Stripe.');
+    return;
+  }
+  try{
+    const response = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: cart })
+    });
+    const data = await response.json();
+    if(data.url){
+      window.location.href = data.url; // manda al comprador a la página real de pago de Stripe
+    } else {
+      alert('No se pudo iniciar el pago. Intenta de nuevo.');
+    }
+  } catch(err){
+    alert('Error de conexión al iniciar el pago.');
+  }
 }
 
 function toggleAlbumMenu(){
