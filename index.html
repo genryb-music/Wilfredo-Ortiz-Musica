@@ -520,7 +520,7 @@ function slugify(str){
 function openShare(title, type){
   currentShareTitle = title;
   // Nota: reemplaza este dominio por el real cuando la tienda esté publicada
-  currentShareUrl = `https://inmaculadamusic.com/${type}/${slugify(title)}`;
+  currentShareUrl = `${window.location.origin}/#${type}-${slugify(title)}`;
   document.getElementById('shareTitle').textContent = title;
   document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(currentShareUrl)}`;
   document.getElementById('shareFb').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentShareUrl)}`;
