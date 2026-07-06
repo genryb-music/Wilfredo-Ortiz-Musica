@@ -30,6 +30,9 @@ module.exports = async (req, res) => {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
+      metadata: {
+        negocio: 'musica-wilfredo-ortiz',
+      },
       success_url: `${req.headers.origin}/?compra=exitosa`,
       cancel_url: `${req.headers.origin}/?compra=cancelada`,
     });
@@ -40,4 +43,3 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: 'No se pudo iniciar el pago' });
   }
 };
-
