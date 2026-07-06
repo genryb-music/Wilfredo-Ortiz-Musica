@@ -402,7 +402,7 @@ function renderTracks(){
           <button class="icon-btn" onclick="openShare('${t.title}', 'track')" aria-label="Compartir ${t.title}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
           </button>
-          <button class="price-btn" onclick="addToCart('${t.title}', ${t.price})">$${t.price.toFixed(2)}</button>
+          <button class="price-btn" onclick="addToCart('${t.title}', ${t.price}, '${album.initials}')">$${t.price.toFixed(2)}</button>
         </div>`;
     });
   });
@@ -438,7 +438,7 @@ function renderAlbums(){
             <button class="icon-btn" onclick="openShare('${a.title}', 'album')" aria-label="Compartir ${a.title}">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
             </button>
-            <button class="price-btn" onclick="addToCart('${a.title} (Álbum completo)', ${a.albumPrice})">Comprar</button>
+            <button class="price-btn" onclick="addToCart('${a.title} (Álbum completo)', ${a.albumPrice}, '${a.initials}')">Comprar</button>
           </div>
         </div>
       </div>
@@ -446,8 +446,8 @@ function renderAlbums(){
   }).join('');
 }
 
-function addToCart(title, price){
-  cart.push({title, price});
+function addToCart(title, price, albumCode){
+  cart.push({title, price, albumCode: albumCode || 'SIN-ALBUM'});
   renderCart();
   toggleCart(true);
 }
